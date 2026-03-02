@@ -9,6 +9,7 @@ import { z } from "zod";
 import type { GraphIndex } from "../graph.js";
 import type { SessionCache } from "../cache.js";
 import type { OilConfig, NoteRef } from "../types.js";
+import { readNote } from "../vault.js";
 import { queryNotes } from "../query.js";
 import { searchVault } from "../search.js";
 import type { EmbeddingIndex } from "../embeddings.js";
@@ -170,6 +171,87 @@ export function registerRetrieveTools(
       return {
         content: [{ type: "text" as const, text: JSON.stringify(results, null, 2) }],
       };
+    },
+  );
+
+  // ── read_note ─────────────────────────────────────────────────────────
+
+  server.registerTool(
+    "read_note",
+    {
+      description:
+        "Read the full content of a note by path. Returns frontmatter, full markdown body, parsed sections, wikilinks, and tags. Use after search_vault or query_notes to retrieve actual note content.",
+      inputSchema: {
+        path: z.string().describe("Note path relative to vault root (e.g. 'Customers/Contoso.md')"),
+        section: z
+          .string()
+          .optional()
+          .describe("Return only the content under this heading (e.g. 'Opportunities')"),
+      },
+    },
+    async ({ path, section }) => {
+      try {
+        const parsed = await readNote(vaultPath, path);
+
+        if (section) {
+          const sectionContent = parsed.sections.get(section);
+          if (sectionContent === undefined) {
+            const available = Array.from(parsed.sections.keys());
+            return {
+              content: [
+                {
+                  type: "text" as const,
+                  text: JSON.stringify({
+                    error: `Section "${section}" not found in ${path}`,
+                    availableSections: available,
+                  }),
+                },
+              ],
+            };
+          }
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: JSON.stringify({
+                  path: parsed.path,
+                  title: parsed.title,
+                  section,
+                  content: sectionContent,
+                }, null, 2),
+              },
+            ],
+          };
+        }
+
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: JSON.stringify({
+                path: parsed.path,
+                title: parsed.title,
+                frontmatter: parsed.frontmatter,
+                content: parsed.content,
+                sections: Object.fromEntries(parsed.sections),
+                wikilinks: parsed.wikilinks,
+                tags: parsed.tags,
+              }, null, 2),
+            },
+          ],
+        };
+      } catch (err) {
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: JSON.stringify({
+                error: `Failed to read note: ${err instanceof Error ? err.message : String(err)}`,
+              }),
+            },
+          ],
+        };
+      }
     },
   );
 }
