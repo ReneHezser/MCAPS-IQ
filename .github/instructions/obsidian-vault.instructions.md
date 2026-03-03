@@ -1,5 +1,6 @@
 ---
 description: "Obsidian vault integration — local knowledge layer, customer roster, durable storage, CRM prefetch context, Connect hook routing. Use when reasoning about vault reads, customer defaults, durable memory, Obsidian notes, OIL tools, customer roster filtering, vault-first storage, or cross-medium context assembly."
+applyTo: "mcp/oil/**"
 ---
 
 # Obsidian Vault — Local Knowledge Layer

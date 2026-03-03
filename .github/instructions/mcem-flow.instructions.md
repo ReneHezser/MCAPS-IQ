@@ -1,5 +1,5 @@
 ---
-description: "MCEM sales process flow — the process spine mapping Stages 1–5, role accountability (ATU/STU/CSU), exit criteria, and atomic skill activation. Use when reasoning about opportunity stage progression, MCEM exit criteria, stage identification, role orchestration, pipeline health, commit gates, handoff readiness, delivery accountability, value realization, or expansion routing. Loaded for Specialist, SE, CSA, CSAM workflows."
+description: "MCEM process spine: maps Stages 1-5 with ATU/STU/CSU accountability, exit criteria, and skill activation order. Triggers: stage progression, MCEM exit criteria, role orchestration, commit gates, handoff readiness, expansion routing."
 ---
 
 # MCEM Sales Process Flow
