@@ -4,13 +4,26 @@ description: "First-time setup verification and guided walkthrough. Use after cl
 
 # Getting Started
 
-Run a quick environment check and walk me through first-time setup.
+Run a quick environment check, identify my role, and walk me into my first real workflow. Don't just verify — guide me.
 
 ## Steps
 
-1. **Check prerequisites** — verify that MCP servers are installed and built by running `node scripts/init.js --check` in a terminal.
-2. **Check Azure sign-in** — run `az account show` to confirm I'm signed in. If not, tell me to run `az login` (remind me I need to be on VPN first).
+1. **Check prerequisites** — verify that MCP servers are installed and built by running `node scripts/init.js --check` in a terminal. If anything fails, give me the exact fix command — don't assume I know my way around a terminal.
+2. **Check Azure sign-in** — run `az account show` to confirm I'm signed in. If not, tell me to run `az login` (remind me I need VPN first).
 3. **Verify MCP connectivity** — use `crm_whoami` to confirm CRM is reachable. If it fails, tell me the likely cause (VPN, token expired, etc.).
-4. **Suggest a first prompt** — based on my CRM identity, suggest a role-appropriate prompt I can try right now.
+4. **Identify my role** — from the `crm_whoami` result, infer my likely MCAPS role (Specialist, SE, CSA, or CSAM). Present it and ask me to confirm or correct.
+5. **Show me what I can do** — based on my confirmed role, present a short menu (3–4 items) of the highest-value things I can do right now. Format as numbered options I can just pick from:
+   - Each option should be a single sentence describing the action
+   - Include the actual prompt I'd type (or offer to run it for me)
+   - Prioritize: daily hygiene first, then pipeline/milestone review, then deeper analysis
 
-If anything fails, give me the exact fix command — don't assume I know my way around a terminal.
+## Tone
+
+Be encouraging and brief. This is my first time — don't overwhelm me with every feature. Just get me to one successful action and tell me where to go next.
+
+## After the first action completes
+
+Say: *"Nice — you're set up. Here are the slash commands you'll use most:"* and list:
+- `/daily` — your role-specific morning routine
+- `/weekly` — weekly review and governance prep
+- `/what-next` — not sure what to do? I'll check your pipeline and suggest actions

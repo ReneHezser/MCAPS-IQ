@@ -168,21 +168,28 @@ crm_query({
 
 ## `get_milestones` Tool — Actual Parameters
 
-The `get_milestones` tool only accepts these parameters (defined in `mcp-server/src/tools.js`):
+The `get_milestones` tool accepts these parameters (defined in `mcp/msx/src/tools.js`):
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
+| `customerKeyword` | string | Resolves customer name → accounts → opportunities → milestones in one call |
+| `opportunityKeyword` | string | Resolves opportunity name → milestones in one call |
 | `opportunityId` | string (GUID) | Filter by single opportunity |
+| `opportunityIds` | string[] (GUIDs) | Batch mode: array of opportunity GUIDs (chunked to groups of 25) |
 | `milestoneNumber` | string | Filter by milestone number |
 | `milestoneId` | string (GUID) | Get single milestone by ID |
 | `ownerId` | string (GUID) | Filter by owner |
 | `mine` | boolean | Get all milestones owned by current user |
+| `statusFilter` | 'active' \| 'all' | Filter by status: active = Not Started/In Progress/Blocked/At Risk |
+| `keyword` | string | Case-insensitive keyword filter across milestone name, opportunity, and workload |
+| `format` | 'full' \| 'summary' | Response format: summary groups by status/commitment/opportunity |
+| `taskFilter` | 'all' \| 'with-tasks' \| 'without-tasks' | Filter milestones by task presence |
+| `includeTasks` | boolean | When true, embeds linked tasks inline on each milestone (default: false) |
 
-**Parameters that DO NOT EXIST** (despite appearing in some documentation):
-- `opportunityIds` (plural array) — use `crm_query` with OR filters instead
-- `statusFilter` — use `crm_query` with `msp_milestonestatus` filter instead
-- `taskFilter` — not supported; use `get_milestone_activities` after retrieving milestones
-- `format` — not supported
+**Preferred patterns (one-call milestone retrieval):**
+- `get_milestones({ customerKeyword: "Contoso", statusFilter: "active" })` — 1 call
+- `get_milestones({ opportunityKeyword: "Azure Migration", includeTasks: true })` — 1 call with tasks
+- `get_milestones({ opportunityIds: [...], format: "summary" })` — batch mode with compact output
 
 ## Deal Team: Opportunity vs. Milestone Ownership
 

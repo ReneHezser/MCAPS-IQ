@@ -161,9 +161,9 @@ When this model is explicit, CSAM friction is treated as upstream ambiguity to c
 #### Upfront Scoping Pattern (minimize context expansion)
 Collect relevant scope in as few calls as possible before branching into per-milestone workflows:
 0. **VAULT-PREFETCH** — read vault customer roster and context to scope CRM queries. Skipped automatically if OIL is unavailable (see `obsidian-vault.instructions.md` § Vault Protocol Phases).
-1. `get_my_active_opportunities()` — one call returns all active opps with customer names (use `customerKeyword` to narrow).
-2. `get_milestones({ opportunityId, statusFilter: 'active', format: 'summary' })` — compact grouped output instead of full records.
-3. Only call `get_milestone_activities(milestoneId)` for specific milestones needing investigation.
+1. **Prefer name resolution** — `get_milestones({ customerKeyword: "Contoso", statusFilter: 'active', format: 'summary' })` resolves customer → milestones in one call. Add `includeTasks: true` for inline tasks.
+2. If vault provided GUIDs: `get_milestones({ opportunityId, statusFilter: 'active', format: 'summary' })` — compact grouped output.
+3. Only call `get_milestone_activities(milestoneId)` for specific milestones needing deep investigation (or use `includeTasks: true` above).
 4. Reserve `crm_query` for ad-hoc OData needs not covered by structured tools.
 
 ### WorkIQ MCP companion (M365 retrieval)
@@ -177,10 +177,9 @@ Collect relevant scope in as few calls as possible before branching into per-mil
 **Trigger**: CSAM is tagged as owner for delivery execution delays or unresolved tasks.
 
 **Flow**:
-1. Call `get_milestones({ opportunityId, statusFilter: 'active', format: 'summary' })` — identify at-risk/blocked milestones from compact output.
+1. Call `get_milestones({ opportunityId, statusFilter: 'active', format: 'summary', includeTasks: true })` — identify at-risk/blocked milestones with inline tasks from compact output.
 2. Call `crm_query(...)` to inspect owner, assignment, and dependency fields.
-3. Call `get_milestone_activities(milestoneId)` for milestones lacking clear delivery owner evidence (targeted only).
-4. Produce dry-run `update_milestone(...)` recommendations to correct owner/dependency clarity.
+3. Produce dry-run `update_milestone(...)` recommendations to correct owner/dependency clarity.
 
 **Decision logic**:
 - Flag accountability mismatch when CSAM is listed as delivery owner but partner/CSA/ISD execution authority is implied in activity history.
@@ -194,7 +193,7 @@ Collect relevant scope in as few calls as possible before branching into per-mil
 **Trigger**: Milestone status is proposed for `committed`.
 
 **Flow**:
-1. Call `get_milestones({ opportunityId, statusFilter: 'active', format: 'summary' })` — isolate milestones transitioning to committed from compact output.
+1. Call `get_milestones({ opportunityId, statusFilter: 'active', format: 'summary', includeTasks: true })` — isolate milestones transitioning to committed with inline tasks from compact output.
 2. Call `crm_query(...)` to validate delivery path, capacity signals, and target dates.
 3. For missing readiness evidence, generate dry-run `create_task(...)` and `update_milestone(...)` payloads.
 

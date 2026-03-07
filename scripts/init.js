@@ -13,8 +13,9 @@
  */
 
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, join } from "node:path";
+import { createInterface } from "node:readline";
 
 // ── repo root (scripts/ lives one level below) ──────────────────────
 const ROOT = resolve(import.meta.dirname, "..");
@@ -192,6 +193,95 @@ function checkOnly() {
   return prereqsOk && serversOk;
 }
 
+// ── global alias registration ───────────────────────────────────────
+function registerAlias() {
+  heading("Registering 'mcaps' CLI alias");
+
+  // Ensure bin script is executable on Unix
+  if (!isWindows) {
+    const binScript = join(ROOT, "bin", "mcaps.js");
+    try {
+      execSync(`chmod +x "${binScript}"`, { stdio: "pipe" });
+    } catch { /* best-effort */ }
+  }
+
+  try {
+    // --ignore-scripts prevents recursive postinstall
+    run("npm link --ignore-scripts", ROOT);
+    ok("'mcaps' is now available globally — try it from any directory!");
+    return true;
+  } catch {
+    warn("Could not register global alias automatically.");
+    if (isWindows) {
+      warn("  Try running from an Administrator terminal: npm link");
+    } else {
+      warn("  Try: sudo npm link --ignore-scripts");
+      warn("  Or with nvm/fnm (no sudo): npm link --ignore-scripts");
+    }
+    return false;
+  }
+}
+
+// ── .env configuration ──────────────────────────────────────────────
+function parseEnvFile(filePath) {
+  const vars = {};
+  if (!existsSync(filePath)) return vars;
+  const lines = readFileSync(filePath, "utf-8").split("\n");
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq === -1) continue;
+    vars[line.slice(0, eq).trim()] = line.slice(eq + 1).trim().replace(/^["']|["']$/g, "");
+  }
+  return vars;
+}
+
+function ask(question) {
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => rl.question(question, (a) => { rl.close(); resolve(a.trim()); }));
+}
+
+async function configureEnv() {
+  const envPath = join(ROOT, ".env");
+  const existing = parseEnvFile(envPath);
+
+  if (existing.OBSIDIAN_VAULT_PATH) {
+    ok(`Vault path already configured: ${existing.OBSIDIAN_VAULT_PATH}`);
+    return;
+  }
+
+  // Skip prompt in non-interactive environments (CI, piped stdin)
+  if (!process.stdin.isTTY) {
+    warn("Non-interactive shell — skipping vault path prompt.");
+    warn("Set OBSIDIAN_VAULT_PATH in .env manually for the OIL MCP server.");
+    return;
+  }
+
+  heading("Obsidian Vault Configuration");
+  console.log("  The OIL MCP server needs the path to your Obsidian vault.");
+  console.log("  This is stored in .env (gitignored) — not committed.\n");
+
+  const vaultPath = await ask("  Obsidian vault path (or press Enter to skip): ");
+
+  if (!vaultPath) {
+    warn("Skipped — OIL server won't start without a vault path.");
+    warn("You can set it later:  echo 'OBSIDIAN_VAULT_PATH=/your/path' >> .env");
+    return;
+  }
+
+  if (!existsSync(vaultPath)) {
+    warn(`Path does not exist yet: ${vaultPath}`);
+    warn("Saving anyway — make sure the vault is created before starting OIL.");
+  }
+
+  // Append to .env (preserve any other vars)
+  const envLine = `OBSIDIAN_VAULT_PATH=${vaultPath}\n`;
+  const content = existsSync(envPath) ? readFileSync(envPath, "utf-8") : "";
+  writeFileSync(envPath, content + envLine, "utf-8");
+  ok(`Saved to .env: OBSIDIAN_VAULT_PATH=${vaultPath}`);
+}
+
 // ── main ────────────────────────────────────────────────────────────
 const checkMode = process.argv.includes("--check");
 
@@ -206,6 +296,8 @@ if (checkMode) {
   }
   const serversOk = initServers();
   if (serversOk) {
+    await configureEnv();
+    registerAlias();
     heading("All done ✔");
 
     // Check if already signed in to provide the right next step
@@ -219,7 +311,8 @@ if (checkMode) {
     2. MCP servers auto-start via .vscode/mcp.json
     3. Open Copilot chat (Cmd+Shift+I) and try: "Who am I in MSX?"
 
-  Or use GitHub Copilot CLI:  copilot
+  Or from anywhere:  mcaps
+  (launches Copilot CLI in this repo)
 `);
     } else {
       console.log(`
@@ -230,7 +323,8 @@ if (checkMode) {
     4. MCP servers auto-start via .vscode/mcp.json
     5. Open Copilot chat (Cmd+Shift+I) and try: "Who am I in MSX?"
 
-  Or use GitHub Copilot CLI:  copilot
+  Or from anywhere:  mcaps
+  (launches Copilot CLI in this repo)
 `);
     }
   } else {

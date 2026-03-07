@@ -21,10 +21,9 @@ Keeps milestone tasks current and actionable by detecting missing owners, stale 
 ## Flow
 
 1. Call `msx-crm:get_my_active_opportunities` — single call for all active opportunities.
-2. Call `msx-crm:get_milestones` with `opportunityId` per opportunity — filter milestones where SE is contributing.
-3. Call `msx-crm:get_milestone_activities` for milestones with unclear task state (targeted only).
-4. Apply task completeness checks (see below).
-5. Generate dry-run corrections:
+2. Call `msx-crm:get_milestones` with `opportunityIds` (batch from step 1), `statusFilter: 'active'`, and `includeTasks: true` — one call returns milestones with inline tasks for SE-scoped milestones. If scoped to a single customer, use `customerKeyword` instead.
+3. Apply task completeness checks (see below).
+4. Generate dry-run corrections:
    - `msx-crm:create_task` for missing tasks
    - `msx-crm:update_task` for stale fields
    - `msx-crm:close_task` for completed actions

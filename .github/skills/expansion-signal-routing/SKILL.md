@@ -20,9 +20,8 @@ Captures expansion signals identified during Stage 5 delivery or optimization an
 
 ## Flow
 
-1. Call `msx-crm:get_milestones` with `opportunityId` — isolate optimize/adoption milestones.
-2. Call `msx-crm:get_milestone_activities` for evidence of unmet potential or extension patterns (targeted only).
-3. Call `msx-crm:get_my_active_opportunities` to check for existing expansion opportunities (avoid duplicates).
+1. Call `msx-crm:get_milestones` with `opportunityId`, `keyword: 'adoption'`, and `includeTasks: true` — isolate optimize/adoption milestones with inline task evidence.
+2. Call `msx-crm:get_my_active_opportunities` to check for existing expansion opportunities (avoid duplicates).
 4. Classify signal and determine routing (see below).
 5. Generate dry-run actions:
    - `msx-crm:create_task` to route signal to Specialist/ATU

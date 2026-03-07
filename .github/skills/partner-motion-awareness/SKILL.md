@@ -21,7 +21,7 @@ Detects partner involvement on opportunities and adjusts ownership assumptions, 
 ## Flow
 
 1. Call `msx-crm:crm_get_record` on opportunity — check for partner linkage, co-sell flags, and deal registration.
-2. Call `msx-crm:get_milestones` with `opportunityId` — check delivery attribution on milestones.
+2. Call `msx-crm:get_milestones` with `opportunityId` and `includeTasks: true` — check delivery attribution on milestones with inline tasks.
 3. Classify partner motion type (see below).
 4. Produce adjustment guidance for active skills.
 

@@ -30,9 +30,12 @@ Ask clarifying questions:
 ## Step 2 — Composite and Batch Tools First
 
 Prefer composite tools over chaining primitives:
-- `msx-crm:find_milestones_needing_tasks({ customerKeywords: [...] })` — one call replaces the accounts→opportunities→milestones→tasks chain.
-- `msx-crm:list_opportunities({ customerKeyword: "..." })` — resolves account names to GUIDs internally.
-- `msx-crm:get_milestone_activities({ milestoneIds: [...] })` — batch task retrieval grouped by milestone.
+- **`msx-crm:get_milestones({ customerKeyword: "Contoso" })`** — resolves customer name → accounts → opportunities → milestones in one call. Add `statusFilter: 'active'` and/or `includeTasks: true` for filtered results with inline tasks. This is the preferred tool for customer-scoped milestone queries.
+- **`msx-crm:get_milestones({ opportunityKeyword: "Azure Migration" })`** — resolves opportunity name → milestones in one call. No need to call `list_opportunities` first.
+- `msx-crm:get_milestones({ opportunityIds: [...], statusFilter: 'active', format: 'summary' })` — batch mode with status filtering and compact output.
+- `msx-crm:find_milestones_needing_tasks({ customerKeywords: [...] })` — specialized: finds milestones *without* tasks.
+- `msx-crm:list_opportunities({ customerKeyword: "..." })` — resolves account names to opportunity GUIDs (use `get_milestones` with `customerKeyword` instead if you need milestones).
+- `msx-crm:get_milestone_activities({ milestoneIds: [...] })` — batch task retrieval grouped by milestone (or use `get_milestones` with `includeTasks: true`).
 
 ## Step 3 — crm_query for Filtered Lookups
 
@@ -46,15 +49,27 @@ Preferred tool for milestone queries needing filtering. See `crm-entity-schema.i
 - Multi-opportunity: OData `or` in `$filter` (`_msp_opportunityid_value eq '<GUID1>' or _msp_opportunityid_value eq '<GUID2>'`)
 - Status filtering: `msp_milestonestatus eq 861980000` (On Track), `ne 861980003` (exclude Completed)
 
-## Step 4 — get_milestones for Simple Single-Entity Lookups
+## Step 4 — get_milestones (Full-Featured Tool)
 
-Use only for:
-- By `milestoneId` or `milestoneNumber` (single record)
-- By `opportunityId` (singular — scoped to one opportunity)
-- By `ownerId` (scoped to one owner)
-- `mine: true` only after user explicitly wants all their milestones
+`get_milestones` is the primary milestone retrieval tool. It supports:
 
-`get_milestones` does NOT support: `opportunityIds` (plural), `statusFilter`, `taskFilter`, or `format`. Use `crm_query` instead.
+| Parameter | Type | Description |
+|---|---|---|
+| `customerKeyword` | string | Resolves customer name → accounts → opportunities → milestones in one call |
+| `opportunityKeyword` | string | Resolves opportunity name → milestones in one call |
+| `opportunityId` | string (GUID) | Filter by single opportunity |
+| `opportunityIds` | string[] | Batch mode: array of opportunity GUIDs |
+| `milestoneId` | string (GUID) | Direct milestone lookup |
+| `milestoneNumber` | string | e.g. "7-123456789" |
+| `ownerId` | string (GUID) | Filter by owner |
+| `mine` | boolean | Current user's milestones (default if no other filter) |
+| `statusFilter` | 'active' \| 'all' | Filter by status group |
+| `keyword` | string | Case-insensitive keyword filter |
+| `format` | 'full' \| 'summary' | Response format |
+| `taskFilter` | 'all' \| 'with-tasks' \| 'without-tasks' | Filter by task presence |
+| `includeTasks` | boolean | Embed linked tasks inline on each milestone |
+
+Use `crm_query` only for queries that `get_milestones` cannot express (e.g., custom date range filters, arbitrary OData predicates).
 
 ## Step 5 — Drill Down Incrementally
 
@@ -69,13 +84,16 @@ For "which milestones need tasks":
 | Pattern | Status |
 |---|---|
 | `get_milestones(mine: true)` → "which ones need attention?" | ❌ Unscoped |
-| `get_milestones({ opportunityIds: [...], statusFilter: "active" })` | ❌ Params don't exist |
 | `crm_query({ entitySet: "msp_milestones" })` | ❌ Wrong entity set |
 | `crm_query` with `msp_forecastedconsumptionrecurring` | ❌ Field doesn't exist |
 | `crm_query` with `msp_estimatedcompletiondate` | ❌ Use `msp_milestonedate` |
 | Loop: list_opportunities per customer → get_milestones per opp → get_milestone_activities per ms | ❌ ~30 calls |
 | Skipping vault when OIL is available | ❌ Wastes API calls |
-| `oil:get_customer_context("Contoso")` → use GUID → `crm_query` with filter | ✅ Vault-first (2 calls) |
+| `get_milestones({ customerKeyword: "Contoso", statusFilter: "active" })` | ✅ **1 call** (best) |
+| `get_milestones({ customerKeyword: "Contoso", includeTasks: true })` | ✅ **1 call** with inline tasks |
+| `get_milestones({ opportunityKeyword: "Azure Migration" })` | ✅ **1 call** (name resolution) |
+| `get_milestones({ opportunityIds: [...], statusFilter: "active" })` | ✅ Batch with filtering |
+| `oil:get_customer_context("Contoso")` → use GUID → `get_milestones({ opportunityId })` | ✅ Vault-first (2 calls) |
 | `oil:prepare_crm_prefetch({ customers: [...] })` → paste into `crm_query` | ✅ CRM-ready prefetch |
 | `find_milestones_needing_tasks({ customerKeywords: [...] })` | ✅ 1 call |
 | `crm_query` with proper `$filter`/`$select`/`$top` | ✅ Filtered, efficient |

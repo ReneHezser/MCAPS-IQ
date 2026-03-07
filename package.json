@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "AI-powered sales operations toolkit for MCAPS — one-command setup",
+  "bin": {
+    "mcaps": "./bin/mcaps.js"
+  },
   "scripts": {
     "setup": "node scripts/init.js",
     "check": "node scripts/init.js --check",

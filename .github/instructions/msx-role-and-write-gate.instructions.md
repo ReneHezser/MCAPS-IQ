@@ -13,10 +13,10 @@ applyTo: "mcp-server/**"
 Before calling any CRM read tool that may return large result sets (especially `get_milestones` with `mine: true`):
 1. **VAULT-PREFETCH first**: If OIL is available, call `get_customer_context({ customer: "<Name>" })` for the target customer to get assembled context including opportunity GUIDs, account IDs, and team. Use these IDs directly in CRM queries — do not run CRM discovery queries for identifiers the vault already has. For CRM-ready filters, use `prepare_crm_prefetch({ customers: ["<Name>"] })`. (See `obsidian-vault.instructions.md` § VAULT-PREFETCH.)
 2. **Confirm the user's role** (see §1 below).
-3. **Ask scoping questions only if the vault didn't resolve scope**: which opportunity/customer, which status, what time range, or what specific data is needed.
-4. **Prefer `crm_query`** with `$filter`, `$select`, `$top` for targeted lookups over bulk `get_milestones(mine: true)`.
-5. **Use `get_milestones` with a specific `opportunityId` or `milestoneId`/`milestoneNumber`** when you have the identifier (from vault or user).
-6. Only use `get_milestones(mine: true)` (unfiltered) if the user explicitly requests all milestones and you have warned about volume.
+3. **Prefer `get_milestones` with name resolution**: Use `get_milestones({ customerKeyword: "Contoso" })` or `get_milestones({ opportunityKeyword: "Azure Migration" })` to resolve names to milestones in one call. Add `statusFilter: 'active'` and/or `includeTasks: true` as needed.
+4. **Use `get_milestones` with a specific `opportunityId` or `milestoneId`/`milestoneNumber`** when you have the identifier (from vault or user).
+5. Only use `get_milestones(mine: true)` (unfiltered) if the user explicitly requests all milestones and you have warned about volume.
+6. **Avoid chaining** `list_opportunities` → `get_milestones` — use `customerKeyword` or `opportunityKeyword` on `get_milestones` instead.
 
 ## 1) Role Resolution (Required before workflow guidance)
 1. Identify current user via `crm_auth_status` (or `crm_whoami`).

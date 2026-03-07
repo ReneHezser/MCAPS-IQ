@@ -22,9 +22,8 @@ Provides CSA with a risk-classified view of committed milestones, surfacing exec
 
 1. Call `msx-crm:crm_auth_status`.
 2. Call `msx-crm:get_my_active_opportunities` — single call for all active opportunities.
-3. Call `msx-crm:get_milestones` with `opportunityId` per opportunity — filter committed milestones from summary.
-4. Call `msx-crm:get_milestone_activities` only for at-risk/blocked candidates from step 3.
-5. Classify execution state per milestone.
+3. Call `msx-crm:get_milestones` with `opportunityIds` (batch from step 2), `statusFilter: 'active'`, and `includeTasks: true` — one call returns committed milestones with inline tasks. If scoped to a single customer, use `customerKeyword` instead.
+4. Classify execution state per milestone.
 6. Generate dry-run corrections:
    - `msx-crm:update_milestone` for risk/status/comments
    - `msx-crm:create_task` for follow-up actions

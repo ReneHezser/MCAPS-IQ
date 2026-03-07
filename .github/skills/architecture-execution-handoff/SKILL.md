@@ -20,9 +20,8 @@ Creates a structured handoff note documenting architecture decisions, constraint
 
 ## Flow
 
-1. Call `msx-crm:get_milestones` with `opportunityId` — identify milestones transitioning to committed or with completed proof.
-2. Call `msx-crm:get_milestone_activities` for proof traces on impacted milestones (targeted only).
-3. Call `msx-crm:crm_query` on task entities for broader dependency tracking if needed.
+1. Call `msx-crm:get_milestones` with `opportunityId` and `includeTasks: true` — identify milestones transitioning to committed or with completed proof, with inline task/proof traces.
+2. Call `msx-crm:crm_query` on task entities for broader dependency tracking if needed.
 4. Compile handoff note from gathered evidence (see template below).
 5. Generate dry-run `msx-crm:create_task` payloads for missing owner/action gaps.
 

@@ -20,10 +20,9 @@ Prevents Unified constraints from surfacing after commitment by detecting Unifie
 
 ## Flow
 
-1. Call `msx-crm:get_milestones` with `opportunityId` and keyword `unified` — isolate Unified-dependent milestones.
+1. Call `msx-crm:get_milestones` with `opportunityId`, `keyword: 'unified'`, and `includeTasks: true` — isolate Unified-dependent milestones with inline task evidence.
 2. Call `msx-crm:crm_query` for eligibility, accreditation, and dispatch readiness indicators on those milestones.
-3. Call `msx-crm:get_milestone_activities` for milestones lacking readiness evidence (targeted only).
-4. Classify constraint severity (see below).
+3. Classify constraint severity (see below).
 5. Generate dry-run corrections:
    - `msx-crm:create_task` for escalation or readiness tasks
    - `msx-crm:update_milestone` for risk/status updates

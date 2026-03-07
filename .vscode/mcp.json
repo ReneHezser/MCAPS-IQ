@@ -24,23 +24,13 @@
 		// Obsidian Intelligence Layer (OIL) — knowledge layer MCP server
 		// Subtree: mcp/oil (https://github.com/JinLee794/Obsidian-Intelligence-Layer)
 		// Setup: cd mcp/oil && npm install && npm run build
+		// Vault path loaded from .env (created during `npm install` / `node scripts/init.js`).
 		// If not configured, workflows fall back to stateless CRM-only operation.
 		"oil": {
 			"type": "stdio",
 			"command": "node",
-			"args": ["mcp/oil/dist/index.js"],
-			"env": {
-				"OBSIDIAN_VAULT_PATH": "${input:obsidianVaultPath}"
-			}
-		},
-
-	},
-	"inputs": [
-		{
-			"id": "obsidianVaultPath",
-			"type": "promptString",
-			"description": "Absolute path to your Obsidian vault directory",
-			"default": "${env:OBSIDIAN_VAULT_PATH}"
+			"args": ["scripts/oil-start.js"]
 		}
-	]
+
+	}
 }

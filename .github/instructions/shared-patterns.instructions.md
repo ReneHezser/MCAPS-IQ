@@ -35,10 +35,10 @@ description: "Shared definitions, runtime contract, upfront scoping pattern, Wor
 Collect scope in minimal calls before per-milestone workflows:
 
 0. **VAULT-PREFETCH** — call `oil:get_customer_context({ customer })` for opportunity GUIDs and context. Skip if OIL unavailable. See `obsidian-vault.instructions.md`.
-1. `msx-crm:get_my_active_opportunities()` — returns all active opportunities (use `customerKeyword` to narrow).
-2. `msx-crm:get_milestones({ opportunityId })` — scoped to one opportunity.
-3. `msx-crm:get_milestone_activities(milestoneId)` — only for specific milestones needing investigation.
-4. `msx-crm:crm_query` — for filtered/multi-opportunity lookups. See `crm-query-strategy.instructions.md`.
+1. **Prefer `get_milestones` with name resolution** — `msx-crm:get_milestones({ customerKeyword: "Contoso", statusFilter: "active" })` resolves customer → accounts → opportunities → milestones in one call. Add `includeTasks: true` to embed tasks inline.
+2. **If vault provided GUIDs** — `msx-crm:get_milestones({ opportunityId })` or `msx-crm:get_milestones({ opportunityIds: [...] })` for batch.
+3. `msx-crm:get_milestone_activities(milestoneId)` — only for specific milestones needing deep investigation (or use `includeTasks: true` above).
+4. `msx-crm:crm_query` — for ad-hoc OData needs not covered by `get_milestones`. See `crm-query-strategy.instructions.md`.
 
 ## WorkIQ MCP Companion
 
