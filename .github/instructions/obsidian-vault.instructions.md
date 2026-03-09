@@ -85,9 +85,46 @@ Each customer file is the single source of local truth for that customer. Sectio
 | `## Team` | Account team members, roles, stakeholder contacts |
 | `## Opportunities` | **Summary index** of active opportunities (names with `[[wikilinks]]` to sub-notes). Canonical data lives in entity sub-notes — see below. |
 | `## Milestones` | **Summary index** of tracked milestones. Canonical data lives in milestone sub-notes. |
+| `## Unified Coverage` | EDE alignment and Unified Support package tracking — see schema below |
 | `## Agent Insights` | Validated findings promoted from working memory |
 | `## Connect Hooks` | Evidence capture entries (see Connect Hooks schema) |
 | `## Notes` | Free-form meeting notes, decisions, observations |
+
+### Unified Coverage Section Schema
+
+CRM does not have a clean entity for Enhanced Designated Engineer (EDE) → package → account mapping. The vault `## Unified Coverage` section serves as the knowledge layer for this data, maintained by Specialists and CSAs.
+
+**Section format:**
+
+```markdown
+## Unified Coverage
+
+| Package | Domain | EDE | Status | Notes |
+|---|---|---|---|---|
+| Unified Infra Core | Infrastructure | [[Jane Chen]] | Active | Aligned since Q1 FY26 |
+| Unified Security | Security | — | **Gap** | No EDE aligned; active Security pipeline exists |
+| Unified Data & AI | Data & AI | [[Bob Lee]] | Active | Underconsumed — 40% utilization |
+
+**Contract status:** Underconsumed (est. 55% utilized)
+**Last updated:** 2026-03-01
+```
+
+**Field definitions:**
+
+| Field | Description |
+|---|---|
+| Package | Unified Support package name aligned to the TPID |
+| Domain | Technology domain: Infrastructure, Security, Data & AI, Modern Work, Business Apps |
+| EDE | Enhanced Designated Engineer name as `[[wikilink]]` to People note, or `—` if none aligned |
+| Status | `Active` / `Gap` (no EDE) / `Rotating` (interim coverage) |
+| Notes | Utilization, alignment date, consumption context |
+
+**Consumption context** (free text below the table): overall contract utilization level and last-updated date. Used by `account-landscape-awareness` skill to detect Unified investment signals.
+
+**Who maintains this data:**
+- **Specialists** upload EDE alignment data — they know which packages are sold and which EDEs are assigned
+- **CSAs** update consumption status and flag gaps — they see delivery reality vs. contract capacity
+- **Agent** can scaffold the section via `oil:patch_note({ path, heading: 'Unified Coverage', content })` when data is surfaced during workflows
 
 ### Entity Sub-Notes (Source of Truth)
 

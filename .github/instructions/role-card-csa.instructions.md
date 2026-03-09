@@ -44,6 +44,7 @@ When running shared skills, apply this CSA focus:
 | `unified-constraint-check` | Technical feasibility constraints, Unified eligibility, accreditation gaps |
 | `exit-criteria-validation` | Delivery motion validated, success metrics have baseline + target |
 | `expansion-signal-routing` | Capture optimization insight; route to Specialist/ATU for opportunity creation |
+| `account-landscape-awareness` | Adjacent pipeline for swarming, EDE coverage gaps for Unified upsell, cross-CSA activity on shared accounts |
 
 ## Cross-Role Communication
 - **With SE**: Receive proof outcomes, architecture choices, risk notes; provide execution plan validation

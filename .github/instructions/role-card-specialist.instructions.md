@@ -44,6 +44,7 @@ When running shared skills, apply this Specialist focus:
 | `handoff-readiness-validation` | Completeness of handoff artifact: why bought, success criteria, scope, next actions |
 | `commit-gate-enforcement` | Validate that CSA/CSAM readiness signals exist before recommending commitment |
 | `partner-motion-awareness` | Impact on pipeline structure and co-sell alignment |
+| `account-landscape-awareness` | Full account pipeline visibility, EDE alignment data maintenance, Unified package coverage tracking |
 
 ## Cross-Role Communication
 - **With SE**: Agree on proof plan, success criteria, and milestone plan

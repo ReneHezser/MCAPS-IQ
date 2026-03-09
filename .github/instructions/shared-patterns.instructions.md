@@ -92,6 +92,8 @@ These chains are pre-validated. When a prompt matches a chain pattern, load and 
 | Post-proof handoff | `architecture-feasibility-check` → `architecture-execution-handoff` → `handoff-readiness-validation` | "proof completed, create handoff" |
 | Adoption + expansion | `adoption-excellence-review` → `value-realization-pack` → `expansion-signal-routing` | "adoption health + value + expansion" |
 | SE morning prep | `task-hygiene-flow` → `execution-monitoring` → `unified-constraint-check` | "SE daily check", "task hygiene + blockers" |
+| Account swarming | `account-landscape-awareness` → `account-structure-diagram` → `pipeline-hygiene-triage` | "what else is happening", "swarm opportunities", "full account view", "who else is working" |
+| Unified investment scan | `account-landscape-awareness` → `unified-constraint-check` → `pipeline-qualification` | "EDE gaps", "Unified upsell", "package coverage", "where should we invest" |
 
 ## Connect Hook Capture (Post-Action)
 

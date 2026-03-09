@@ -71,3 +71,4 @@ venv/
 ENV/
 env/
 
+.connect/
