@@ -1,6 +1,6 @@
 ![alt text](docs/assets/avatar.png)
 
-# MCAPS IQ 
+# MCAPS IQ
 
 > **Your AI-powered sales operations toolkit for MCAPS.** (previously known as `MCAPS Copilot Tools`)
 > Talk to Copilot in plain English to manage MSX opportunities, milestones, and tasks — no coding required.
@@ -24,8 +24,8 @@ MCAPS Copilot Tools connects GitHub Copilot (in VS Code) to your MSX CRM and Mic
 - [Try It — Scenario Prompts](#try-it--scenario-prompts)
 - [Optional: Enable Obsidian Vault Integration](#optional-enable-obsidian-vault-integration)
 - [Project Layout](#project-layout)
-- [What's Included](#whats-included)
-- [Write Operations & Responsible AI Use](#write-operations--responsible-ai-use)
+- [What&#39;s Included](#whats-included)
+- [Write Operations &amp; Responsible AI Use](#write-operations--responsible-ai-use)
 - [How It Works (Under the Hood)](#how-it-works-under-the-hood)
 - [Configuration](#configuration)
 - [Customization — Make It Yours](#customization--make-it-yours)
@@ -36,19 +36,19 @@ MCAPS Copilot Tools connects GitHub Copilot (in VS Code) to your MSX CRM and Mic
 
 ## Quick Start (5 Minutes)
 
-
 > **Prerequisites:**
+>
 > - **Connected to the Microsoft corporate VPN** (required to reach internal CRM endpoints)
 > - A **Microsoft corp account** (used for `az login` authentication)
 > - A GitHub Copilot-compatible IDE such as [VS Code](https://code.visualstudio.com/) (or [VS Code Insiders](https://code.visualstudio.com/insiders/)) with the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat), **or** [GitHub Copilot CLI](https://github.com/features/copilot/cli/) (`brew install copilot-cli`)
 > - [Node.js 18+](https://nodejs.org/)
 > - [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli)
 
-
 ### Step 1: Clone and install
+
 ```bash
-git clone https://github.com/JinLee794/mcaps-copilot-tools.git
-cd mcaps-copilot-tools
+git clone https://github.com/JinLee794/mcaps-iq.git
+cd mcaps-iq
 
 # One command installs everything (both MCP servers + builds)
 npm install
@@ -73,16 +73,19 @@ az login
 ### Step 3: Open the repo in VS Code — or Copilot CLI
 
 **Option A: VS Code**
+
 ```bash
 # from the repo root
 code .
 ```
 
 **Option B: [GitHub Copilot CLI](https://github.com/features/copilot/cli/)**
+
 ```bash
 # from the repo root — starts a terminal-native agentic session
 copilot
 ```
+
 Copilot CLI automatically detects `.vscode/mcp.json`, `AGENTS.md`, and `.github/skills/` in the repo. If using the CLI, skip Steps 4–5 — the MCP servers start on demand and you can begin prompting immediately. See [Alternative: Use with GitHub Copilot CLI](#alternative-use-with-github-copilot-cli) for install and usage details.
 
 ### Step 4: Start the MCP servers
@@ -108,14 +111,14 @@ Or just type: `Who am I in MSX?`
 
 Don't know where to start? You don't need to read this whole README. Just type `/` in the Copilot chat and pick a flow. Each one is role-aware — it detects your CRM identity and tailors the experience.
 
-| Command | When to use | What it does |
-|---|---|---|
-| `/getting-started` | First time setup | Checks your environment, identifies your role, walks you to your first successful action |
-| `/my-role` | Anytime | Shows your MCAPS role, what you're responsible for, and a menu of actions to pick from |
-| `/daily` | Every morning | Runs your role-specific hygiene checks and gives you a prioritized top-3 action list |
-| `/weekly` | Monday / pre-governance | Full pipeline or milestone review with shareable status bullets + internal action list |
-| `/what-next` | Idle moment or context-switch | Scans your pipeline and recommends exactly 3 things to do, ranked by impact |
-| `/quick-wins` | Anytime (~5 min) | Finds CRM hygiene issues you can fix immediately — stale dates, missing fields, orphaned tasks |
+| Command              | When to use                   | What it does                                                                                    |
+| -------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------- |
+| `/getting-started` | First time setup              | Checks your environment, identifies your role, walks you to your first successful action        |
+| `/my-role`         | Anytime                       | Shows your MCAPS role, what you're responsible for, and a menu of actions to pick from          |
+| `/daily`           | Every morning                 | Runs your role-specific hygiene checks and gives you a prioritized top-3 action list            |
+| `/weekly`          | Monday / pre-governance       | Full pipeline or milestone review with shareable status bullets + internal action list          |
+| `/what-next`       | Idle moment or context-switch | Scans your pipeline and recommends exactly 3 things to do, ranked by impact                     |
+| `/quick-wins`      | Anytime (~5 min)              | Finds CRM hygiene issues you can fix immediately — stale dates, missing fields, orphaned tasks |
 
 ### Recommended progression
 
@@ -165,8 +168,7 @@ Copilot CLI automatically picks up the project's configuration when you run it f
 ### Run it
 
 ```bash
-cd mcaps-copilot-tools
-
+cd mcaps-iq
 # Start Copilot CLI — it will detect the MCP servers and agent config
 copilot
 
@@ -208,63 +210,63 @@ Copy-paste any of these into the Copilot chat window after you've started the MC
 
 ### Getting oriented
 
-| What you want | Prompt to try |
-|---|---|
-| Check your CRM identity | `Who am I in MSX?` |
-| See your active pipeline | `Show me my active opportunities.` |
+| What you want                       | Prompt to try                                   |
+| ----------------------------------- | ----------------------------------------------- |
+| Check your CRM identity             | `Who am I in MSX?`                            |
+| See your active pipeline            | `Show me my active opportunities.`            |
 | Understand what tools are available | `What MCP tools do I have available for MSX?` |
 
 ### By role
 
 **Specialist**
 
-| Scenario | Prompt |
-|---|---|
-| Qualify a new signal | `I got a signal from the Contoso account team about an Azure migration interest. Should I create an opportunity?` |
-| Weekly pipeline review | `It's Monday — run my weekly pipeline review. What needs cleanup across my Stage 2 and 3 opps?` |
-| Check handoff readiness | `The Fabrikam AI Copilot deal just got customer agreement. Is it ready to hand off to CSU?` |
-| Plan a proof | `We need a POC plan for the Northwind opportunity. What should the proof cover and who owns what?` |
+| Scenario                | Prompt                                                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Qualify a new signal    | `I got a signal from the Contoso account team about an Azure migration interest. Should I create an opportunity?` |
+| Weekly pipeline review  | `It's Monday — run my weekly pipeline review. What needs cleanup across my Stage 2 and 3 opps?`                  |
+| Check handoff readiness | `The Fabrikam AI Copilot deal just got customer agreement. Is it ready to hand off to CSU?`                       |
+| Plan a proof            | `We need a POC plan for the Northwind opportunity. What should the proof cover and who owns what?`                |
 
 **Solution Engineer**
 
-| Scenario | Prompt |
-|---|---|
-| Daily task hygiene | `Run my daily task hygiene check — any stale tasks or missing owners on my active milestones?` |
-| Proof scoping | `The SE and Specialist need to align on success criteria for the Contoso pilot. Help us scope the proof plan.` |
+| Scenario           | Prompt                                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Daily task hygiene | `Run my daily task hygiene check — any stale tasks or missing owners on my active milestones?`                |
+| Proof scoping      | `The SE and Specialist need to align on success criteria for the Contoso pilot. Help us scope the proof plan.` |
 
 **Cloud Solution Architect**
 
-| Scenario | Prompt |
-|---|---|
-| Architecture feasibility | `Is the proposed architecture for the Cencora migration actually feasible? Check delivery dependencies and technical risk.` |
-| Handoff to delivery | `The Contoso proof is complete. Create a handoff note summarizing architecture decisions, risks, and next actions for delivery.` |
-| Execution sweep | `Run my weekly execution sweep — what's at risk across my committed milestones?` |
-| Value realization | `We're entering Realize Value for the Northwind deal. Are our committed milestones tracking measurable outcomes?` |
+| Scenario                 | Prompt                                                                                                                             |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Architecture feasibility | `Is the proposed architecture for the Cencora migration actually feasible? Check delivery dependencies and technical risk.`      |
+| Handoff to delivery      | `The Contoso proof is complete. Create a handoff note summarizing architecture decisions, risks, and next actions for delivery.` |
+| Execution sweep          | `Run my weekly execution sweep — what's at risk across my committed milestones?`                                                |
+| Value realization        | `We're entering Realize Value for the Northwind deal. Are our committed milestones tracking measurable outcomes?`                |
 
 **CSAM**
 
-| Scenario | Prompt |
-|---|---|
-| Define outcomes | `I'm in Listen and Consult with a new engagement. Help me define measurable customer outcomes before we move to Stage 2.` |
-| Commit gate | `The team wants to commit the Fabrikam migration milestone. Is it actually ready? Run the commit gate check.` |
-| Milestone health | `How are my committed milestones doing? I have governance this week and need a health summary.` |
-| Delivery ownership | `I keep getting tagged for delivery delays on the Vocera milestone but I'm not the delivery owner. Who actually owns execution here?` |
-| Adoption review | `How is adoption going on the Contoso AI deployment? Check usage health and consumption targets.` |
-| Evidence pack | `I have a QBR with Northwind next week. Prepare an evidence pack with CRM status and recent customer communications from the last 30 days.` |
-| Expansion routing | `During the Fabrikam optimization review, the customer mentioned interest in expanding to a second region. Should this be a new opportunity?` |
+| Scenario           | Prompt                                                                                                                                          |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Define outcomes    | `I'm in Listen and Consult with a new engagement. Help me define measurable customer outcomes before we move to Stage 2.`                     |
+| Commit gate        | `The team wants to commit the Fabrikam migration milestone. Is it actually ready? Run the commit gate check.`                                 |
+| Milestone health   | `How are my committed milestones doing? I have governance this week and need a health summary.`                                               |
+| Delivery ownership | `I keep getting tagged for delivery delays on the Vocera milestone but I'm not the delivery owner. Who actually owns execution here?`         |
+| Adoption review    | `How is adoption going on the Contoso AI deployment? Check usage health and consumption targets.`                                             |
+| Evidence pack      | `I have a QBR with Northwind next week. Prepare an evidence pack with CRM status and recent customer communications from the last 30 days.`   |
+| Expansion routing  | `During the Fabrikam optimization review, the customer mentioned interest in expanding to a second region. Should this be a new opportunity?` |
 
 **Any role**
 
-| Scenario | Prompt |
-|---|---|
-| Stage identification | `What stage is the Contoso deal actually in? The CRM says Stage 3 but activity looks like Stage 2.` |
-| Exit criteria | `Are we ready to advance to Stage 4 on the Northwind opportunity? Check exit criteria.` |
-| Stage loopback | `The proof failed — customer environment wasn't ready. Should we loop back to Stage 2?` |
-| Risk review | `What risks am I missing on the Cencora account? Do a full risk review.` |
-| Role orchestration | `Three roles are involved on the Fabrikam deal and nobody's moving. Who should lead the next action?` |
-| Authority tie-break | `The CSA and I are giving conflicting direction on the Vocera milestone. Who owns this decision?` |
-| Partner motion | `The Contoso opportunity has a partner co-sell motion. How does that change ownership and delivery attribution?` |
-| Unified constraints | `The milestone depends on Unified delivery. Are there dispatch or eligibility blockers I should know about?` |
+| Scenario             | Prompt                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Stage identification | `What stage is the Contoso deal actually in? The CRM says Stage 3 but activity looks like Stage 2.`              |
+| Exit criteria        | `Are we ready to advance to Stage 4 on the Northwind opportunity? Check exit criteria.`                          |
+| Stage loopback       | `The proof failed — customer environment wasn't ready. Should we loop back to Stage 2?`                         |
+| Risk review          | `What risks am I missing on the Cencora account? Do a full risk review.`                                         |
+| Role orchestration   | `Three roles are involved on the Fabrikam deal and nobody's moving. Who should lead the next action?`            |
+| Authority tie-break  | `The CSA and I are giving conflicting direction on the Vocera milestone. Who owns this decision?`                |
+| Partner motion       | `The Contoso opportunity has a partner co-sell motion. How does that change ownership and delivery attribution?` |
+| Unified constraints  | `The milestone depends on Unified delivery. Are there dispatch or eligibility blockers I should know about?`     |
 
 ### Multi-skill chain prompts (the good stuff)
 
@@ -323,12 +325,12 @@ OIL is included in this repo as a git subtree at `mcp/oil`.
 ### How to enable it
 
 1. **Build OIL** (if you haven't already during setup):
+
    ```bash
    cd mcp/oil
    npm install
    npm run build
    ```
-
 2. Open `.vscode/mcp.json` and uncomment the `"oil"` block:
 
 ```jsonc
@@ -355,16 +357,16 @@ OIL exposes **22 domain-specific tools** including `get_customer_context`, `sear
 
 ![alt text](docs/assets/project-layout-flat.png)
 
-| Folder | What's inside | Editable? |
-|---|---|---|
-| `.github/copilot-instructions.md` | Global Copilot behavior — the "system prompt" | **Yes** — your main customization lever |
-| `.github/instructions/` | Operational rules loaded by keyword match | **Yes** — add your team's workflow gates |
-| `.github/skills/` | 27 atomic domain skills (loaded on demand by keyword match) | **Yes** — tailor to your operating model |
-| `.github/prompts/` | Reusable prompt templates (slash commands) | **Yes** — create workflows you repeat often |
-| `.vscode/mcp.json` | MCP server definitions (CRM, WorkIQ, Obsidian) | **Yes** — add/remove data sources |
-| `mcp/msx/` | MSX CRM MCP server *(subtree: [microsoft/msx-copilot-mcp](https://github.com/microsoft/msx-copilot-mcp))* | Optional — works out of the box |
-| `mcp/oil/` | Obsidian Intelligence Layer *(subtree: [JinLee794/Obsidian-Intelligence-Layer](https://github.com/JinLee794/Obsidian-Intelligence-Layer))* | Optional — enables persistent vault memory |
-| `docs/` | Architecture docs and supporting material | Reference only |
+| Folder                              | What's inside                                                                                                                            | Editable?                                          |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `.github/copilot-instructions.md` | Global Copilot behavior — the "system prompt"                                                                                           | **Yes** — your main customization lever     |
+| `.github/instructions/`           | Operational rules loaded by keyword match                                                                                                | **Yes** — add your team's workflow gates    |
+| `.github/skills/`                 | 27 atomic domain skills (loaded on demand by keyword match)                                                                              | **Yes** — tailor to your operating model    |
+| `.github/prompts/`                | Reusable prompt templates (slash commands)                                                                                               | **Yes** — create workflows you repeat often |
+| `.vscode/mcp.json`                | MCP server definitions (CRM, WorkIQ, Obsidian)                                                                                           | **Yes** — add/remove data sources           |
+| `mcp/msx/`                        | MSX CRM MCP server*(subtree: [microsoft/msx-copilot-mcp](https://github.com/microsoft/msx-copilot-mcp))*                                  | Optional — works out of the box                   |
+| `mcp/oil/`                        | Obsidian Intelligence Layer*(subtree: [JinLee794/Obsidian-Intelligence-Layer](https://github.com/JinLee794/Obsidian-Intelligence-Layer))* | Optional — enables persistent vault memory        |
+| `docs/`                           | Architecture docs and supporting material                                                                                                | Reference only                                     |
 
 > **Start here:** Open any file in `.github/` and read it. They're all plain Markdown. See the [Customization](#customization--make-it-yours) section for step-by-step examples.
 
@@ -375,19 +377,19 @@ OIL exposes **22 domain-specific tools** including `get_customer_context`, `sear
 
 These tools let Copilot interact with MSX CRM on your behalf:
 
-| Tool | What it does |
-|---|---|
-| `crm_whoami` | Checks who you are in MSX (validates authentication) |
-| `crm_query` | Runs read-only OData queries against CRM |
-| `crm_get_record` | Fetches a specific CRM record by ID |
-| `list_opportunities` | Lists opportunities, filterable by customer |
-| `get_milestones` | Lists milestones for an opportunity or owner |
-| `find_milestones_needing_tasks` | Finds milestones across customers that need task attention |
-| `view_milestone_timeline` | Returns a timeline view of milestones |
-| `view_opportunity_cost_trend` | Returns cost trend data for an opportunity |
-| `create_task` | ⚠️ Creates a new task under a milestone *(write — staged)* |
-| `update_task` / `close_task` | ⚠️ Updates or closes an existing task *(write — staged)* |
-| `update_milestone` | ⚠️ Updates milestone status or details *(write — staged)* |
+| Tool                              | What it does                                                   |
+| --------------------------------- | -------------------------------------------------------------- |
+| `crm_whoami`                    | Checks who you are in MSX (validates authentication)           |
+| `crm_query`                     | Runs read-only OData queries against CRM                       |
+| `crm_get_record`                | Fetches a specific CRM record by ID                            |
+| `list_opportunities`            | Lists opportunities, filterable by customer                    |
+| `get_milestones`                | Lists milestones for an opportunity or owner                   |
+| `find_milestones_needing_tasks` | Finds milestones across customers that need task attention     |
+| `view_milestone_timeline`       | Returns a timeline view of milestones                          |
+| `view_opportunity_cost_trend`   | Returns cost trend data for an opportunity                     |
+| `create_task`                   | ⚠️ Creates a new task under a milestone*(write — staged)* |
+| `update_task` / `close_task`  | ⚠️ Updates or closes an existing task*(write — staged)*   |
+| `update_milestone`              | ⚠️ Updates milestone status or details*(write — staged)*  |
 
 </details>
 
@@ -405,14 +407,14 @@ The system uses **role cards** (identity and accountability rules) combined with
 
 **Atomic skills** (examples — see `.github/skills/` for all 27):
 
-| Skill | What it does |
-|---|---|
-| `pipeline-qualification` | Qualifies new opportunities at Stages 1-2 |
-| `milestone-health-review` | Reviews committed milestone health at Stages 4-5 |
-| `proof-plan-orchestration` | Manages technical proof plans for SE |
-| `risk-surfacing` | Proactively identifies deal/execution risks |
-| `handoff-readiness-validation` | Validates handoff quality between roles |
-| `workiq-query-scoping` | Scopes M365 searches for effective retrieval |
+| Skill                            | What it does                                     |
+| -------------------------------- | ------------------------------------------------ |
+| `pipeline-qualification`       | Qualifies new opportunities at Stages 1-2        |
+| `milestone-health-review`      | Reviews committed milestone health at Stages 4-5 |
+| `proof-plan-orchestration`     | Manages technical proof plans for SE             |
+| `risk-surfacing`               | Proactively identifies deal/execution risks      |
+| `handoff-readiness-validation` | Validates handoff quality between roles          |
+| `workiq-query-scoping`         | Scopes M365 searches for effective retrieval     |
 
 You don't need to memorize these — just tell Copilot your role and it will load the right card and activate relevant skills automatically.
 
@@ -438,6 +440,7 @@ Learn more: [WorkIQ overview (Microsoft Learn)](https://learn.microsoft.com/en-u
 [OIL](mcp/oil/README.md) turns your local [Obsidian](https://obsidian.md/) vault into a durable, queryable knowledge layer for the agent. Without it, the system works — but statelessly. With it, Copilot gains **persistent memory** across sessions: customer context, meeting history, relationship maps, and accumulated insights.
 
 **Why Obsidian?**
+
 - **100% local** — your notes never leave your machine. No cloud sync required.
 - **Graph-based** — Obsidian's wikilink model gives OIL a pre-built relationship graph (people ↔ customers ↔ meetings ↔ projects) queryable in O(1) via a pre-indexed backlink map.
 - **Markdown-native** — plain `.md` files you own forever. No proprietary format, no vendor lock-in.
@@ -445,18 +448,18 @@ Learn more: [WorkIQ overview (Microsoft Learn)](https://learn.microsoft.com/en-u
 
 **What OIL provides (22 tools):**
 
-| Category | Tools | Purpose |
-|---|---|---|
-| **Orient** | `get_vault_context`, `get_customer_context`, `get_person_context`, `query_graph`, `resolve_people_to_customers` | Understand who/what/where before querying CRM |
-| **Retrieve** | `search_vault`, `query_notes`, `find_similar_notes` | 3-tier search: lexical → fuzzy → semantic embeddings |
-| **Write** | `patch_note`, `capture_connect_hook`, `draft_meeting_note`, `update_customer_file`, `create_customer_file`, + more | Gated writes with diffs and human confirmation |
-| **Composite** | `prepare_crm_prefetch`, `correlate_with_vault`, `promote_findings`, `check_vault_health`, `get_drift_report` | Cross-MCP workflows that bridge vault ↔ CRM ↔ M365 |
+| Category            | Tools                                                                                                                        | Purpose                                                |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| **Orient**    | `get_vault_context`, `get_customer_context`, `get_person_context`, `query_graph`, `resolve_people_to_customers`    | Understand who/what/where before querying CRM          |
+| **Retrieve**  | `search_vault`, `query_notes`, `find_similar_notes`                                                                    | 3-tier search: lexical → fuzzy → semantic embeddings |
+| **Write**     | `patch_note`, `capture_connect_hook`, `draft_meeting_note`, `update_customer_file`, `create_customer_file`, + more | Gated writes with diffs and human confirmation         |
+| **Composite** | `prepare_crm_prefetch`, `correlate_with_vault`, `promote_findings`, `check_vault_health`, `get_drift_report`       | Cross-MCP workflows that bridge vault ↔ CRM ↔ M365   |
 
 **Setting up your own vault:**
 
 1. **Create a vault** — Open [Obsidian](https://obsidian.md/) and create a new vault (or point to an existing folder of Markdown files).
-
 2. **Add the folder structure OIL expects** — at minimum:
+
    ```
    YourVault/
    ├── Customers/       # One .md per customer (e.g., Contoso.md)
@@ -464,14 +467,15 @@ Learn more: [WorkIQ overview (Microsoft Learn)](https://learn.microsoft.com/en-u
    ├── Meetings/        # Meeting notes with wikilinks to customers/people
    └── oil.config.yaml  # Optional — customize folder paths and field names
    ```
-   See [bench/fixtures/vault/](mcp/oil/bench/fixtures/vault/) for example files you can copy as templates.
 
+   See [bench/fixtures/vault/](mcp/oil/bench/fixtures/vault/) for example files you can copy as templates.
 3. **Build and configure OIL:**
+
    ```bash
    cd mcp/oil && npm install && npm run build && cd ../..
    ```
-
 4. **Enable in `.vscode/mcp.json`** — uncomment the `oil` block and set your vault path:
+
    ```jsonc
    "oil": {
        "type": "stdio",
@@ -482,7 +486,6 @@ Learn more: [WorkIQ overview (Microsoft Learn)](https://learn.microsoft.com/en-u
        }
    }
    ```
-
 5. Click **Start** on `oil` in VS Code — the agent now has persistent memory.
 
 > **Don't use Obsidian?** Everything works without it. You can also bring any MCP-compatible note server — just wire it into `.vscode/mcp.json`.
@@ -518,6 +521,10 @@ Staged operations expire automatically after 10 minutes if not acted on.
 - **Verify the right record.** CRM GUIDs can look similar. Confirm the opportunity/milestone name matches what you expect.
 - **Start with reads.** Before writing, use read tools (`crm_query`, `get_milestones`) to confirm the current state of the record.
 - **You are accountable.** AI suggests changes, but you own the approval. Treat every write approval as if you were making the change manually in MSX.
+
+```
+
+```
 
 ---
 
@@ -557,11 +564,11 @@ Make sure you're on VPN and signed in with your Microsoft corp account (e.g., `y
 
 The file [.vscode/mcp.json](.vscode/mcp.json) defines which MCP servers are available to Copilot. Each server exposes tools that Copilot can call on your behalf. Out of the box, it includes:
 
-| Server | Status | Purpose | Tools It Provides |
-|---|---|---|---|
-| `msx-crm` | **Enabled** | MSX CRM operations | `crm_whoami`, `crm_query`, `list_opportunities`, `get_milestones`, `create_task`, etc. |
-| `workiq` | **Enabled** | Microsoft 365 evidence retrieval | `ask_work_iq` (Teams, Outlook, SharePoint) |
-| `oil` | Commented out | Obsidian Intelligence Layer | `get_customer_context`, `search_vault`, `prepare_crm_prefetch`, `promote_findings`, etc. |
+| Server      | Status            | Purpose                          | Tools It Provides                                                                                |
+| ----------- | ----------------- | -------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `msx-crm` | **Enabled** | MSX CRM operations               | `crm_whoami`, `crm_query`, `list_opportunities`, `get_milestones`, `create_task`, etc. |
+| `workiq`  | **Enabled** | Microsoft 365 evidence retrieval | `ask_work_iq` (Teams, Outlook, SharePoint)                                                     |
+| `oil`     | Commented out     | Obsidian Intelligence Layer      | `get_customer_context`, `search_vault`, `prepare_crm_prefetch`, `promote_findings`, etc. |
 
 You can add any MCP-compatible server to this file. See the [Customization](#customization--make-it-yours) section for examples.
 
@@ -576,12 +583,12 @@ This repo is designed to be forked and tailored. The `.github/` directory is whe
 
 GitHub Copilot looks for special files in your repo's `.github/` folder and loads them automatically:
 
-| File / Folder | What Copilot Does With It |
-|---|---|
-| `.github/copilot-instructions.md` | **Always loaded.** The "system prompt" — top-level rules Copilot follows on every turn. |
+| File / Folder                              | What Copilot Does With It                                                                                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.github/copilot-instructions.md`        | **Always loaded.** The "system prompt" — top-level rules Copilot follows on every turn.                                                      |
 | `.github/instructions/*.instructions.md` | **Loaded when relevant.** Each file has a `description` in its YAML frontmatter. Copilot loads it when your request matches those keywords. |
-| `.github/skills/*/SKILL.md` | **Loaded on demand.** Deep role/domain playbooks. Copilot picks the right one based on `name` and `description` in frontmatter. |
-| `.github/prompts/*.prompt.md` | **Reusable prompt templates.** Appear in Copilot's slash-command menu (`/`) so you can trigger complex workflows with one click. |
+| `.github/skills/*/SKILL.md`              | **Loaded on demand.** Deep role/domain playbooks. Copilot picks the right one based on `name` and `description` in frontmatter.           |
+| `.github/prompts/*.prompt.md`            | **Reusable prompt templates.** Appear in Copilot's slash-command menu (`/`) so you can trigger complex workflows with one click.            |
 
 You don't need to register these files anywhere — just create or edit them and Copilot picks them up automatically.
 
@@ -752,12 +759,12 @@ Browse the [MCP Server Registry](https://github.com/modelcontextprotocol/servers
 
 Understanding the loading tiers helps you decide where to put new content:
 
-| Tier | Location | When Copilot Loads It | Best For |
-|---|---|---|---|
-| **Tier 0** | `copilot-instructions.md` | Every single turn | Global rules, routing, response style (~80 lines max) |
-| **Tier 1** | `instructions/*.instructions.md` | When request matches `description` keywords | Operational contracts, workflow gates, schemas |
-| **Tier 2** | `skills/*/SKILL.md` | When request matches `name`/`description` | Deep role playbooks, domain expertise |
-| **Tier 3** | `documents/` | Only when explicitly read via tool call | Large reference material, specs, protocol docs |
+| Tier             | Location                           | When Copilot Loads It                         | Best For                                              |
+| ---------------- | ---------------------------------- | --------------------------------------------- | ----------------------------------------------------- |
+| **Tier 0** | `copilot-instructions.md`        | Every single turn                             | Global rules, routing, response style (~80 lines max) |
+| **Tier 1** | `instructions/*.instructions.md` | When request matches `description` keywords | Operational contracts, workflow gates, schemas        |
+| **Tier 2** | `skills/*/SKILL.md`              | When request matches `name`/`description` | Deep role playbooks, domain expertise                 |
+| **Tier 3** | `documents/`                     | Only when explicitly read via tool call       | Large reference material, specs, protocol docs        |
 
 **Rule of thumb:** Put universals in Tier 0, conditionals in Tier 1, role-specific depth in Tier 2, and bulky references in Tier 3.
 
